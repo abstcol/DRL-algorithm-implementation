@@ -1,19 +1,23 @@
 # CartPole-v1
 The implementatin of DQN in CartPole-v1 env.
 
-# installation
+# Installation
 install the project env
 
 ```
-conda create -n gym python
-conda activate gym
-pip install -r requirements.txt
+conda create -n gym --file requirements.txt
+```
+
+# Training
+
+```
+python 
 ```
 
 
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MjE0MzQ1NjUsLTE3ODUxMzI1MDQsMT
-QxNjA5NjQwOSwxMzU3MTExMjAzLDExNjQ1NDM3NzRdfQ==
+eyJoaXN0b3J5IjpbMTM4MDU2NjIxNCwtMTc4NTEzMjUwNCwxND
+E2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
 -->
