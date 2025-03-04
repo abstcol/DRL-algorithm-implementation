@@ -13,7 +13,7 @@ cd gym
 Set up the project environment with:
 
 ```bash
-conda create -n gym python=3.8  
+conda create -n gym python=3.10  
 conda activate gym 
 pip install -r requirements.txt
 ```
@@ -69,6 +69,6 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2ODY4MTAyNzYsLTE3ODUxMzI1MDQsMT
-QxNjA5NjQwOSwxMzU3MTExMjAzLDExNjQ1NDM3NzRdfQ==
+eyJoaXN0b3J5IjpbLTk2MTU3NTM5MywtMTc4NTEzMjUwNCwxND
+E2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
 -->
