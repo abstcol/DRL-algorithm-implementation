@@ -1,14 +1,15 @@
 # CartPole-v1
 An implementation of Deep Q-Network (DQN) in the CartPole-v1 environment.
 
-# Clone Repository 
+
+## Clone Repository 
 First, clone the repository to your local machine: 
 ```bash 
 git clone https://github.com/abstcol/gym.git 
-cd cartpole-dqn
+cd gym
 ```
 
-# Installation
+## Installation
 Set up the project environment with:
 
 ```bash
@@ -18,7 +19,7 @@ pip install -r requirements.txt
 ```
 If you encounter package conflicts, try installing dependencies manually.
 
-# Training
+## Training
 You can train the agent with 
 ```bash
 python train.py
@@ -31,7 +32,7 @@ including:
 `batch_size`: Batch_size for training
 `gamma`: Discount factor
 
-# Logs&Checkpoints
+## Logs&Checkpoints
 
 Training logs and checkpoints will be saved in:`logs/env{env you choose}-yyyymmdd-hhmmss` after experiment.
 For example
@@ -46,12 +47,19 @@ tensorboard --logdir=logs
 
 
 
-# Testing
+## Testing
 After training the agent, you can test it using `test.py`:
 ```bash
 python test.py --weight-path {w_path}
 ```
 Replace `{w_path}` with your actual weight file path.
+
+##  Produce GIF
+You can create a GIF of the agent's performance using `test.py`. Simply run the following command:
+```bash
+python test.py --weight-path {w_path} --produce-gif
+```
+This will generate a GIF showcasing the agent's behavior during testing. Make sure to replace `{w_path}` with the actual path to your trained model's weights.
 
 
 
@@ -61,6 +69,6 @@ Replace `{w_path}` with your actual weight file path.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMTI0OTk4OTEsLTE3ODUxMzI1MDQsMT
-QxNjA5NjQwOSwxMzU3MTExMjAzLDExNjQ1NDM3NzRdfQ==
+eyJoaXN0b3J5IjpbMTYyMzQ2NTE5OSwtMTc4NTEzMjUwNCwxND
+E2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
 -->
