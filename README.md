@@ -26,10 +26,10 @@ python train.py
 ```
 
 You can customize the training process with various arguments.  
-See `arguments.py` for more details, 
-including:
-`lr`: Learning rate for the optimizer
-`batch_size`: Batch_size for training
+See `arguments.py` for more details, \
+including:\
+`lr`: Learning rate for the optimizer\
+`batch_size`: Batch_size for training\
 `gamma`: Discount factor
 
 ## Logs&Checkpoints
@@ -69,6 +69,6 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjUzNzk5MjYwLC0xNzg1MTMyNTA0LDE0MT
-YwOTY0MDksMTM1NzExMTIwMywxMTY0NTQzNzc0XX0=
+eyJoaXN0b3J5IjpbLTE2ODY4MTAyNzYsLTE3ODUxMzI1MDQsMT
+QxNjA5NjQwOSwxMzU3MTExMjAzLDExNjQ1NDM3NzRdfQ==
 -->
