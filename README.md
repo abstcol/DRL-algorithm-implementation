@@ -1,6 +1,6 @@
 # CartPole-v1
 An implementation of Deep Q-Network (DQN) in the CartPole-v1 environment.
-
+![img](https://gitee.com/abstcol/imagebed/raw/master/20250304190112632.gif)
 
 ## Clone Repository 
 First, clone the repository to your local machine: 
@@ -69,6 +69,6 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYyMzQ2NTE5OSwtMTc4NTEzMjUwNCwxND
-E2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
+eyJoaXN0b3J5IjpbNjUzNzk5MjYwLC0xNzg1MTMyNTA0LDE0MT
+YwOTY0MDksMTM1NzExMTIwMywxMTY0NTQzNzc0XX0=
 -->
