@@ -1,6 +1,10 @@
 from typing import List, Union
 import argparse
 
+def check_pth_file(value):
+    if not value.endswith(".pth"):
+        raise argparse.ArgumentTypeError("The weight path must be a .pth file.")
+    return value
 # 创建参数解析器
 parser = argparse.ArgumentParser(description="Environment and DQN Hyperparameters")
 
@@ -99,6 +103,21 @@ parser.add_argument(
     nargs="+",
     default=[32, 6],
     help="The sizes of the hidden layers in the DQN (default: [32, 6])."
+)
+
+# 测试相关参数
+parser.add_argument(
+    "--weight-path",
+    type=check_pth_file,
+    default=".pth",
+    help="The weight path used in test."
+)
+
+#生成gif
+parser.add_argument(
+    "--produce-gif",
+    action="store_true",
+    help="produce gif,gif saved to test_episode.gif"
 )
 
 # 解析参数

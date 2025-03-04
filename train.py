@@ -96,9 +96,6 @@ hparams = {
 # 记录超参数到 TensorBoard
 writer.add_hparams(hparams, {})
 
-# 记录详细参数文本
-config_text = "\n".join([f"{k}: {v}" for k, v in vars(args).items()])
-writer.add_text("Hyperparameter Config", config_text)
 
 rolling_length=100
 # print(env.length_queue)
