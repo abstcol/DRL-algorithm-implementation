@@ -1,6 +1,13 @@
 # CartPole-v1
 An implementation of Deep Q-Network (DQN) in the CartPole-v1 environment.
 
+# Clone Repository 
+First, clone the repository to your local machine: 
+```bash 
+git clone https://github.com/abstcol/gym.git 
+cd cartpole-dqn
+```
+
 # Installation
 Set up the project environment with:
 
@@ -18,7 +25,8 @@ python train.py
 ```
 
 You can customize the training process with various arguments.  
-See `arguments.py` for more details, including:
+See `arguments.py` for more details, 
+including:
 `lr`: Learning rate for the optimizer
 `batch_size`: Batch_size for training
 `gamma`: Discount factor
@@ -53,6 +61,6 @@ Replace `{w_path}` with your actual weight file path.
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkxMDAxNjQ5MSwtMTc4NTEzMjUwNCwxND
-E2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
+eyJoaXN0b3J5IjpbLTEzMTI0OTk4OTEsLTE3ODUxMzI1MDQsMT
+QxNjA5NjQwOSwxMzU3MTExMjAzLDExNjQ1NDM3NzRdfQ==
 -->
