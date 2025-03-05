@@ -64,7 +64,7 @@ class MyDeque():
         1.功能封装，代码更为简介
         2.想要直接将经验存储为tensor形式且保存在gpu中，减少cpu和gpu之间的通信次数，加速训练速度（事实证明没有用）
         :param maxlength:经验池的大小
-        :param obs_size:状态空间的xize
+        :param obs_size:状态空间的size
         :param batch_size:每一次采样的经验数量
         """
 
