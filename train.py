@@ -108,6 +108,8 @@ training_error_moving_average = get_moving_avgs(agent.training_error, rolling_le
 for i in range(len(reward_moving_average)):
     writer.add_scalar("Episode Reward", reward_moving_average[i], i)
     writer.add_scalar("Episode Length", length_moving_average[i], i)
+
+for i in range(len(training_error_moving_average)):
     writer.add_scalar("Training Error", training_error_moving_average[i], i)
 
 writer.close()
