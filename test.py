@@ -1,9 +1,9 @@
 import gymnasium as gym
 from argument import args
-
-
-import agent
+import os
+import importlib
 import imageio
+Agent=importlib.import_module(f"agent_algo.{args.algo_name}")
 
 if args.produce_gif==False:
     env = gym.make(args.env_name, max_episode_steps=args.max_episode_steps, render_mode="human")
@@ -11,8 +11,15 @@ if args.produce_gif==False:
 else:
     env = gym.make(args.env_name, max_episode_steps=args.max_episode_steps, render_mode="rgb_array")
 
+
+import wandb
+run = wandb.init()
+artifact = run.use_artifact(args.checkpoint_name, type='model')
+artifact_dir = artifact.download()
+model_files = os.listdir(artifact_dir)  # 列出目录下所有文件
+weight_path=os.path.join(artifact_dir,model_files[0])
 # 初始化智能体，设置为测试模式，并加载预训练的模型权重
-agent = agent.Agent(env, mode="test", weight_path=args.weight_path)
+agent = Agent.Agent(env, mode="test", weight_path=weight_path)
 
 # 初始化步数计数器
 step = 0

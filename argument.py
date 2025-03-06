@@ -19,8 +19,8 @@ parser.add_argument(
 parser.add_argument(
     "--episodes",
     type=int,
-    default=600,
-    help="The total number of episodes to train the agent (default: 600)."
+    default=1000,
+    help="The total number of episodes to train the agent (default:1000)."
 )
 
 parser.add_argument(
@@ -28,6 +28,14 @@ parser.add_argument(
     type=int,
     default=400,
     help="The maximum number of steps allowed in a single episode (default: 400)."
+)
+
+#使用的算法
+parser.add_argument(
+    "--algo-name",
+    type=str,
+    default="D2QN",
+    help="The name of the algorithm to use (default: DQN)."
 )
 
 # 经验回放相关参数
@@ -41,7 +49,7 @@ parser.add_argument(
 parser.add_argument(
     "--MAX-EXPERIENCE",
     type=int,
-    default=100000,
+    default=1000,
     help="The maximum size of the experience replay buffer (default: 100000)."
 )
 
@@ -105,19 +113,27 @@ parser.add_argument(
     help="The sizes of the hidden layers in the DQN (default: [32, 6])."
 )
 
-# 测试相关参数
-parser.add_argument(
-    "--weight-path",
-    type=check_pth_file,
-    default=".pth",
-    help="The weight path used in test."
-)
+# # 测试相关参数
+# parser.add_argument(
+#     "--weight-path",
+#     type=check_pth_file,
+#     default=".pth",
+#     help="The weight path used in test."
+# )
 
 #生成gif
 parser.add_argument(
     "--produce-gif",
     action="store_true",
     help="produce gif,gif saved to test_episode.gif"
+)
+
+#wandb权重的name
+parser.add_argument(
+    "--checkpoint-name",
+    type=str,
+    default='abstcold-none/RL-Training/CartPole-v1_D2QN_20250306-174005:v15',
+    help="the checkpoint name you can get on wandb"
 )
 
 # 解析参数

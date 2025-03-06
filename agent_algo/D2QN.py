@@ -7,11 +7,11 @@ from torch.utils.data import Dataset
 import numpy as np
 from collections import deque
 from argument import args
-
+import wandb
 # 自动检测是否有 GPU
 #经过测试发现因为需要不断与环境交互，模型并不能很好利用gpu，反而会导致训练时长增加
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = "cpu"
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = "cpu"
 
 class Net(nn.Module):
     """
@@ -216,8 +216,9 @@ class Agent:
         """
         #当缓冲区中经验数不足一个批量时，不进行更新
         if len(self.memory)<self.batch_size:
+            self.training_error.append(0)
             return
-        self.id += 1
+
         #从缓冲区中获得一个批次的数据
         obs,action,reward,next_obs,terminated=self.memory.get_batch()
         #计算当前q值
@@ -226,7 +227,9 @@ class Agent:
 
         #计算目标q值
         with torch.no_grad():
-            q_t=self.target_q(next_obs).detach()
+
+            index_q_t = self.main_q(next_obs).argmax(dim=1, keepdims=True)
+            q_t=self.target_q(next_obs).gather(1,index_q_t)
             q_t=self.gamma*torch.max(q_t,dim=1,keepdim=True).values*(~terminated)+reward
             q_pred = q.squeeze(1)
             td_error = torch.abs(q_t.squeeze(1) - q_pred)  # 计算时序差分误差，该版本为实现 shape: (batch_size,)
@@ -242,8 +245,8 @@ class Agent:
             param.grad.data.clamp_(-1, 1)  # 限制梯度值在 -1 到 1 的范围内，这是防止梯度值变得过大或过小、导致训练不稳定
         self.optimizer.step()
         #软更新目标网络
-        if self.id==4:
-            self.id=0
+        self.id += 1
+        if self.id%4==0:
             for target_param, local_param in zip(self.target_q.parameters(), self.main_q.parameters()):  # <- soft update
                 target_param.data.copy_(self.tau * local_param.data + (1.0 - self.tau) * target_param.data)
 
