@@ -1,7 +1,7 @@
 # DRL IMPLEMENTATION
 An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN.
-![img](https://gitee.com/abstcol/imagebed/raw/master/20250304190112632.gif)![](https://raw.githubusercontent.com/abstcol/imagebed/main/20250309145034149.gif)
-
+![img](src/Acrobot-v1_D3QN_20250309-150645.gif)![img](src/CartPole-v1_D3QN_20250309-150934.gif)
+![img](src/MountainCar-v0_D3QN_20250309-141714.gif)
 
 ## Project Directory Structure
 
@@ -114,7 +114,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODcyMzAzMDk2LC0xMzM1NTkzNjI0LC05Nj
+eyJoaXN0b3J5IjpbMTQzNjQ5MDAyLC0xMzM1NTkzNjI0LC05Nj
 E1NzUzOTMsLTE3ODUxMzI1MDQsMTQxNjA5NjQwOSwxMzU3MTEx
 MjAzLDExNjQ1NDM3NzRdfQ==
 -->
