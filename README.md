@@ -1,6 +1,38 @@
-# CartPole-v1
-An implementation of Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) in the CartPole-v1 environment.
-![img](https://gitee.com/abstcol/imagebed/raw/master/20250304190112632.gif)
+# DRL IMPLEMENTATION
+An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN in the CartPole-v1 environment.
+![img](https://gitee.com/abstcol/imagebed/raw/master/20250304190112632.gif)![](https://raw.githubusercontent.com/abstcol/imagebed/main/20250309145034149.gif)
+
+
+## Project Directory Structure
+
+gym
+├── agent_algo
+│   &emsp;&emsp;&emsp;&emsp;  ├── D2QN.py
+│   &emsp;&emsp;&emsp;&emsp;  ├── D3QN.py
+│   &emsp;&emsp;&emsp;&emsp;  ├── DQN.py
+│   &emsp;&emsp;&emsp;&emsp;  ├── __init__.py
+│   &emsp;&emsp;&emsp;&emsp;  └── utils.py
+├── argument.py
+├── env.py
+├── README.md
+├── requirements.txt
+└── run_rl
+ &emsp;&emsp;&emsp;&emsp; ├── no_train_car.py
+ &emsp;&emsp;&emsp;&emsp; ├── test.py
+ &emsp;&emsp;&emsp;&emsp; ├── test_utils.py
+ &emsp;&emsp;&emsp;&emsp; ├── train.py
+ &emsp;&emsp;&emsp;&emsp; └── train_utils.py
+ 
+**`agent_algo`**: Contains agent classes defined by various reinforcement learning algorithms. Each file (e.g., `DQN.py`, `D2QN.py`, etc.) implements a specific algorithm. The `utils.py` file includes helper functions related to the algorithms.
+**`argument.py`**: Defines all the command-line arguments used in the program.
+**`env.py`**: Contains wrapper classes that override the environment's `step` function to interact with agents.
+**`run_rl`**: Includes the training and testing scripts. Helper functions for training and testing are in `train_utils.py` and `test_utils.py`. During execution, the directory also generates files related to the run (such as `wandb`, `experiments`, `gif`, `artifacts`)
+
+### Additional Information
+
+-   **`requirements.txt`**: Lists all the dependencies required by the project.
+-   **`README.md`**: Provides documentation for the project.
+
 
 ## Clone Repository 
 First, clone the repository to your local machine: 
@@ -22,6 +54,7 @@ If you encounter package conflicts, try installing dependencies manually.
 ## Training
 You can train the agent with 
 ```bash
+cd run_rl
 python train.py
 ```
 
@@ -81,7 +114,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMzU1OTM2MjQsLTk2MTU3NTM5MywtMT
-c4NTEzMjUwNCwxNDE2MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0
-Mzc3NF19
+eyJoaXN0b3J5IjpbLTE5MTgyNDc4NSwtMTMzNTU5MzYyNCwtOT
+YxNTc1MzkzLC0xNzg1MTMyNTA0LDE0MTYwOTY0MDksMTM1NzEx
+MTIwMywxMTY0NTQzNzc0XX0=
 -->
