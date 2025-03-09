@@ -1,27 +1,27 @@
 # DRL IMPLEMENTATION
-An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN in the CartPole-v1 environment.
+An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN.
 ![img](https://gitee.com/abstcol/imagebed/raw/master/20250304190112632.gif)![](https://raw.githubusercontent.com/abstcol/imagebed/main/20250309145034149.gif)
 
 
 ## Project Directory Structure
 
-gym
-├── agent_algo
-│   &emsp;&emsp;&emsp;&emsp;  ├── D2QN.py
-│   &emsp;&emsp;&emsp;&emsp;  ├── D3QN.py
-│   &emsp;&emsp;&emsp;&emsp;  ├── DQN.py
-│   &emsp;&emsp;&emsp;&emsp;  ├── __init__.py
-│   &emsp;&emsp;&emsp;&emsp;  └── utils.py
-├── argument.py
-├── env.py
-├── README.md
-├── requirements.txt
-└── run_rl
- &emsp;&emsp;&emsp;&emsp; ├── no_train_car.py
- &emsp;&emsp;&emsp;&emsp; ├── test.py
- &emsp;&emsp;&emsp;&emsp; ├── test_utils.py
- &emsp;&emsp;&emsp;&emsp; ├── train.py
- &emsp;&emsp;&emsp;&emsp; └── train_utils.py
+gym\
+├── agent_algo\
+│   &emsp;&emsp;&emsp;&emsp;  ├── D2QN.py\
+│   &emsp;&emsp;&emsp;&emsp;  ├── D3QN.py\
+│   &emsp;&emsp;&emsp;&emsp;  ├── DQN.py\
+│   &emsp;&emsp;&emsp;&emsp;  ├── __init__.py\
+│   &emsp;&emsp;&emsp;&emsp;  └── utils.py\
+├── argument.py\
+├── env.py\
+├── README.md\
+├── requirements.txt\
+└── run_rl\
+ &emsp;&emsp;&emsp;&emsp; ├── no_train_car.py\
+ &emsp;&emsp;&emsp;&emsp; ├── test.py\
+ &emsp;&emsp;&emsp;&emsp; ├── test_utils.py\
+ &emsp;&emsp;&emsp;&emsp; ├── train.py\
+ &emsp;&emsp;&emsp;&emsp; └── train_utils.py\
  
 **`agent_algo`**: Contains agent classes defined by various reinforcement learning algorithms. Each file (e.g., `DQN.py`, `D2QN.py`, etc.) implements a specific algorithm. The `utils.py` file includes helper functions related to the algorithms.
 **`argument.py`**: Defines all the command-line arguments used in the program.
@@ -114,7 +114,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MTgyNDc4NSwtMTMzNTU5MzYyNCwtOT
-YxNTc1MzkzLC0xNzg1MTMyNTA0LDE0MTYwOTY0MDksMTM1NzEx
-MTIwMywxMTY0NTQzNzc0XX0=
+eyJoaXN0b3J5IjpbLTEwNzI1MjgyMDAsLTEzMzU1OTM2MjQsLT
+k2MTU3NTM5MywtMTc4NTEzMjUwNCwxNDE2MDk2NDA5LDEzNTcx
+MTEyMDMsMTE2NDU0Mzc3NF19
 -->
