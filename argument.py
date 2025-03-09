@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description="Environment and DQN Hyperparameter
 parser.add_argument(
     "--env-name",
     type=str,
-    default="MountainCar-v0",
+    default="Acrobot-v1",
     help="The name of the Gymnasium environment to use (default: MountainCar-v0)."
 )
 
@@ -171,7 +171,7 @@ parser.add_argument(
 parser.add_argument(
     "--checkpoint-name",
     type=str,
-    default='abstcold-none/RL-Training/MountainCar-v0_D3QN_20250308-204502:v18',
+    default='abstcold-none/RL-Training/Acrobot-v1_D3QN_20250307-194002:v1',
     help="The checkpoint name you can get on wandb."
 )
 
