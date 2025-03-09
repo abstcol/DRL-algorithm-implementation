@@ -26,7 +26,7 @@ gym\
 **`agent_algo`**: Contains agent classes defined by various reinforcement learning algorithms. Each file (e.g., `DQN.py`, `D2QN.py`, etc.) implements a specific algorithm. The `utils.py` file includes helper functions related to the algorithms.\
 **`argument.py`**: Defines all the command-line arguments used in the program.\
 **`env.py`**: Contains wrapper classes that override the environment's `step` function to interact with agents.\
-**`run_rl`**: Includes the training and testing scripts. Helper functions for training and testing are in `train_utils.py` and `test_utils.py`. During execution, the directory also generates files related to the run (such as `wandb`, `experiments`, `gif`, `artifacts`)\
+**`run_rl`**: Includes the training and testing scripts. Helper functions for training and testing are in `train_utils.py` and `test_utils.py`. During execution, the directory also generates files related to the run (such as `wandb`, `experiments`, `gif`, `artifacts`)
 
 ### Additional Information
 
@@ -114,7 +114,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTAzMTU5ODcxMiwtMTMzNTU5MzYyNCwtOT
-YxNTc1MzkzLC0xNzg1MTMyNTA0LDE0MTYwOTY0MDksMTM1NzEx
-MTIwMywxMTY0NTQzNzc0XX0=
+eyJoaXN0b3J5IjpbODcyMzAzMDk2LC0xMzM1NTkzNjI0LC05Nj
+E1NzUzOTMsLTE3ODUxMzI1MDQsMTQxNjA5NjQwOSwxMzU3MTEx
+MjAzLDExNjQ1NDM3NzRdfQ==
 -->
