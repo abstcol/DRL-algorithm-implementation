@@ -1,5 +1,5 @@
 # DRL IMPLEMENTATION
-An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN.
+An implementation of the DQN and AC algorithm series。
 
 
 ## Project Directory Structure
@@ -118,7 +118,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NTg1NDUwMzIsLTE3MTkxNTc5ODQsLT
+eyJoaXN0b3J5IjpbLTEzMjk3MDU1NzMsLTE3MTkxNTc5ODQsLT
 EzMzU1OTM2MjQsLTk2MTU3NTM5MywtMTc4NTEzMjUwNCwxNDE2
 MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
 -->
