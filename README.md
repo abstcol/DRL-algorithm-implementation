@@ -6,6 +6,8 @@ An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) an
 
 gym\
 ├── agent_algo\
+│   &emsp;&emsp;&emsp;&emsp;  ├── AC_onpolicy.py\
+│   &emsp;&emsp;&emsp;&emsp;  ├── AC_offpolicy.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── D2QN.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── D3QN.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── DQN.py\
@@ -116,7 +118,7 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MTkxNTc5ODQsLTEzMzU1OTM2MjQsLT
-k2MTU3NTM5MywtMTc4NTEzMjUwNCwxNDE2MDk2NDA5LDEzNTcx
-MTEyMDMsMTE2NDU0Mzc3NF19
+eyJoaXN0b3J5IjpbLTE2NTg1NDUwMzIsLTE3MTkxNTc5ODQsLT
+EzMzU1OTM2MjQsLTk2MTU3NTM5MywtMTc4NTEzMjUwNCwxNDE2
+MDk2NDA5LDEzNTcxMTEyMDMsMTE2NDU0Mzc3NF19
 -->
