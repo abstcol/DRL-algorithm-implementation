@@ -80,12 +80,14 @@ The wandb project and name is set as :
     )
 ```
 And the checkpoint will be uploaded every 50 epochs in this formate:
+
 ```python
 # episode结束后的处理
-        if (episode + 1) % 50 == 0:  # 每隔50个episode保存
-            checkpoint_path = os.path.join(checkpoint_dir, f"model_episode_{episode + 1}.pth")
-            torch.save(agent.main_q.state_dict(), checkpoint_path)
-            wandb.log_model(checkpoint_path,f"{args.env_name }_{args.algo_name}_{timestamp}",[f"average_length_{sum([env.length_queue[episode-i] for i in range(50)])/50}"])
+if (episode + 1) % 50 == 0:  # 每隔50个episode保存
+    checkpoint_path = os.path.join(checkpoint_dir, f"model_episode_{episode + 1}.pth")
+    torch.save(agent.actor.state_dict(), checkpoint_path)
+    wandb.log_model(checkpoint_path, f"{args.env_name}_{args.algo_name}_{timestamp}",
+                    [f"average_length_{sum([env.length_queue[episode - i] for i in range(50)]) / 50}"])
 
 ```
 

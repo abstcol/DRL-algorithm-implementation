@@ -33,8 +33,12 @@ class Agent:
         """
         self.env = env
         self.mode = mode
-        self.obs_size = self.env.observation_space.shape[0]  # 观测空间维度
-        self.action_size = self.env.action_space.n  # 动作空间维度
+        if args.asynchronous:
+            self.obs_size = self.env.observation_space.shape[1]
+            self.action_size = self.env.action_space[0].n  # 动作空间大小
+        else:
+            self.obs_size = self.env.observation_space.shape[0]  # 观察空间维度
+            self.action_size = self.env.action_space.n  # 动作空间大小
         self.gamma = args.gamma  # 折扣因子
         self.alpha = args.alpha  # 优先经验回放中的 α 参数
         self.beta = args.beta  # 优先经验回放中的 β 参数

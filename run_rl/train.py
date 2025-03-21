@@ -8,9 +8,7 @@ import datetime
 Agent=importlib.import_module(f"agent_algo.{args.algo_name}")
 from train_utils import *
 
-
-
-for _ in range(5):
+def main():
     #创建惟一的时间戳，用于检查点目录
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     checkpoint_dir= f"experiments/env_{args.env_name}-algo_{args.algo_name}-{timestamp}"
@@ -26,5 +24,10 @@ for _ in range(5):
     #初始化智能体
     agent= Agent.Agent(env, mode="train")
 
+    if args.asynchronous:
+        train_agent_asynchronous(agent,env,args,checkpoint_dir,timestamp)
+    else:train_agent(agent,env,args,checkpoint_dir,timestamp)
 
-    train_agent(agent,env,args,checkpoint_dir,timestamp)
+
+for _ in range(10):
+    main()
