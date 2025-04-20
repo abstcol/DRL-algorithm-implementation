@@ -4,7 +4,7 @@ An implementation of the DQN and AC algorithm series。
 
 ## Project Directory Structure
 
-gym\
+DRL-algorithm-implementation\
 ├── agent_algo\
 │   &emsp;&emsp;&emsp;&emsp;  ├── AC_onpolicy.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── AC_offpolicy.py\
@@ -38,8 +38,8 @@ gym\
 ## Clone Repository 
 First, clone the repository to your local machine: 
 ```bash 
-git clone https://github.com/abstcol/gym.git 
-cd gym
+git clone https://github.com/abstcol/DRL-algorithm-implementation.git 
+cd DRL-algorithm-implementation
 ```
 
 ## Installation
