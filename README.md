@@ -1,11 +1,13 @@
 # DRL IMPLEMENTATION
-An implementation of the Deep Q-Network (DQN) and Double Deep Q-Network(D2QN) and D3QN.
+An implementation of the DQN and AC algorithm series。
 
 
 ## Project Directory Structure
 
-gym\
+DRL-algorithm-implementation\
 ├── agent_algo\
+│   &emsp;&emsp;&emsp;&emsp;  ├── AC_onpolicy.py\
+│   &emsp;&emsp;&emsp;&emsp;  ├── AC_offpolicy.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── D2QN.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── D3QN.py\
 │   &emsp;&emsp;&emsp;&emsp;  ├── DQN.py\
@@ -36,8 +38,8 @@ gym\
 ## Clone Repository 
 First, clone the repository to your local machine: 
 ```bash 
-git clone https://github.com/abstcol/gym.git 
-cd gym
+git clone https://github.com/abstcol/DRL-algorithm-implementation.git 
+cd DRL-algorithm-implementation
 ```
 
 ## Installation
@@ -116,7 +118,8 @@ This will generate a GIF showcasing the agent's behavior during testing. Make su
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MTkxNTc5ODQsLTEzMzU1OTM2MjQsLT
-k2MTU3NTM5MywtMTc4NTEzMjUwNCwxNDE2MDk2NDA5LDEzNTcx
-MTEyMDMsMTE2NDU0Mzc3NF19
+eyJoaXN0b3J5IjpbMTA2NzQzMDM4NSwtMTMyOTcwNTU3MywtMT
+cxOTE1Nzk4NCwtMTMzNTU5MzYyNCwtOTYxNTc1MzkzLC0xNzg1
+MTMyNTA0LDE0MTYwOTY0MDksMTM1NzExMTIwMywxMTY0NTQzNz
+c0XX0=
 -->
