@@ -115,9 +115,9 @@ class Agent:
 
         # 计算目标 Q 值
         with torch.no_grad():
-            index_q_t = self.main_q(next_obs).argmax(dim=1, keepdims=True)  # 采用 Double DQN 方法
-            q_t = self.target_q(next_obs).gather(1, index_q_t)
-            q_t = self.gamma * torch.max(q_t, dim=1, keepdim=True).values * (~terminated) + reward
+            next_action = self.main_q(next_obs).argmax(dim=1, keepdims=True)  # 采用 Double DQN 方法
+            next_q = self.target_q(next_obs).gather(1, next_action)
+            q_t = self.gamma *next_q * (~terminated) + reward
             q_pred = q.squeeze(1)
             td_error = torch.abs(q_t.squeeze(1) - q_pred)  # 计算 TD 误差
             if self.use_prioritized:

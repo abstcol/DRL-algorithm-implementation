@@ -11,13 +11,13 @@ import wandb
 from agent_algo.utils import *
 import torch.nn.functional as F
 # 设备选择，默认使用 CPU
-# 由于 DQN 需要频繁与环境交互，GPU 并不能显著加速训练，反而会增加训练时长
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # device = "cpu"
 
 class Agent:
     """
-    DQN 智能体类，用于训练或测试
+    actor-critic 智能体类，用于训练或测试
     """
 
     def __init__(self, env: gym.Env, mode: str, weight_path="none"):
@@ -101,7 +101,7 @@ class Agent:
 
     def update(self):
         """
-        使用经验回放进行 Q 网络更新
+        使用经验回放进行 ac网络更新
         """
         # # 确保缓冲区中的经验足够一个 batch，否则跳过更新
         # if len(self.memory) < self.batch_size:

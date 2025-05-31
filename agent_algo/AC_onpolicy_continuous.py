@@ -32,39 +32,37 @@ class Agent:
         self.mode = mode
         if args.asynchronous:
             self.obs_size=self.env.observation_space.shape[1]
-            self.action_size = self.env.action_space[0].n  # 动作空间大小
+            self.action_size = self.env.action_space.shape[1]# 每次需要传递动作的数量
             # 经验回放缓冲区（Replay Buffer）
             self.memory = MyDeque_Onpolicy(
                 maxlength=args.MAX_EXPERIENCE,  # 经验回放区最大容量
                 obs_size=self.obs_size,
                 vec_num=args.vec_num,
-                action_size=1
+                action_size=self.action_size
             )
         else:
             self.obs_size = self.env.observation_space.shape[0]  # 观察空间维度
-            self.action_size = self.env.action_space.n  # 动作空间大小
+            self.action_size = self.env.action_space.shape[0]  # 每次需要传递动作的数量
             # 经验回放缓冲区（Replay Buffer）
             self.memory = MyDeque_Onpolicy(
                 maxlength=args.MAX_EXPERIENCE,  # 经验回放区最大容量
                 obs_size=self.obs_size,
                 vec_num=args.vec_num,
-                action_size=1
+                action_size=self.action_size
             )
 
-        #  训练超参数
+        # 训练超参数
         self.gamma = args.gamma  # 折扣因子
-        self.lamb = args.lamb
-        self.use_entropy = args.use_entropy
-        self.entro_coe = args.entro_coe
-        self.max_length = args.MAX_EXPERIENCE
-        self.vec_num = args.vec_num
-        self.batch = self.max_length * self.vec_num
-        self.epsilon = 1
-        self.max_grad_norm = args.max_grad_norm
-
-
+        self.lamb=args.lamb
+        self.use_entropy=args.use_entropy
+        self.entro_coe=args.entro_coe
+        self.max_length=args.MAX_EXPERIENCE
+        self.vec_num=args.vec_num
+        self.batch=self.max_length*self.vec_num
+        self.epsilon=1
+        self.max_grad_norm=args.max_grad_norm
         # 初始化 actor网络
-        self.actor = Net(self.obs_size, self.action_size,final_ac=True).to(device)  # 训练用的主 Q 网络
+        self.actor = Gaussion_Net(self.obs_size, self.action_size,final_ac=False).to(device)  # 训练用的主 Q 网络
 
         if self.mode == "test":
             state_dict = torch.load(weight_path)  # 加载测试模型权重
@@ -76,27 +74,22 @@ class Agent:
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=args.lr)
         self.critic_optimizer=torch.optim.Adam(self.critic.parameters(),lr=args.lr)
 
+
         # 训练相关
         self.training_error = []  # 记录损失值（用于日志记录）
-        self.kl_divergence = []  # 记录更新前后kl㪚度变化
+        self.kl_divergence=[]     # 记录更新前后kl㪚度变化
 
-    def get_action(self, obs) -> int:
-        """
-        根据当前状态选择动作：
-        - 训练模式使用 epsilon-greedy 策略（探索+利用）
-        - 测试模式使用 greedy 策略（纯利用）
 
-        :param obs: 当前环境状态
-        :return: 选定的动作
-        """
-        obs = torch.from_numpy(obs).to(device)
-
-        #根据返回的概率选择动作
+    def get_action(self, obs):
+        obs = torch.from_numpy(obs).float().to(device)
         with torch.no_grad():
-            probs=self.actor(obs)
-            action=torch.multinomial(probs,1).cpu()
-            action=np.array(action.squeeze())
-            return action
+            mu, sigma = self.actor(obs)
+            dist = torch.distributions.Normal(mu, sigma)  # 构造正态分布
+            action = dist.sample()  # 采样连续动作
+
+        return action.cpu().numpy()
+
+
 
     def get_gae(self,terminated,delte):
 
@@ -112,47 +105,62 @@ class Agent:
 
 
     def update(self):
+
+
         """
         使用经验回放进行 ac 网络更新
         """
-        # # 确保缓冲区中的经验足够一个 batch，否则跳过更新
-        # if len(self.memory) < self.batch_size:
-        #     self.training_error.append(0)
-        #     return
+
+        if self.memory.idx != self.memory.batch:
+            return
 
         # 从经验回放缓冲区采样一个批次
         obs, action, reward, next_obs, terminated = self.memory.get_batch()
 
 
         # 计算当前 probs 值
-        probs = self.actor(obs).gather(dim=1, index=action)  # 只选择执行的动作对应的 probs
+        # 计算 Actor 损失
+        mu, sigma = self.actor(obs)
+        dist = torch.distributions.Normal(mu, sigma)
+        log_prob = dist.log_prob(action).sum(dim=-1)
+
         v_now=self.critic(obs)
         # 计算目标 Q 值
         with torch.no_grad():
             v_next=self.critic(next_obs)
             v_target = reward + self.gamma * v_next * (~terminated)  # 计算目标值
             delte=(v_target-v_now).squeeze()
-        gae = self.get_gae(terminated.squeeze(), delte).unsqueeze(1)
-        loss_actor=torch.mean(-torch.log(probs)*gae.detach())
-        loss_critic=F.mse_loss(v_now,gae.detach()+v_now.detach())
+        gae=self.get_gae(  terminated.squeeze(),delte)
+        loss_actor = -torch.mean(log_prob * gae)  # 计算策略梯度损失
+        loss_critic=F.mse_loss(v_now,gae.unsqueeze(1)+v_now.detach())
         if self.use_entropy:
-            entropy_loss=torch.mean(-probs*torch.log(probs+1e-6))
-            loss_actor-=self.entro_coe*entropy_loss
+            # 计算熵增益
+            entropy_loss = dist.entropy() # 计算策略的熵
+            loss_actor-=self.entro_coe*entropy_loss.mean()
 
-        self.training_error.append((loss_actor.item(), loss_critic.item()))
+        self.training_error.append((loss_actor.item(),loss_critic.item()))
 
         # 反向传播 + 梯度裁剪
         self.actor_optimizer.zero_grad()
         self.critic_optimizer.zero_grad()
 
-
         loss_actor.backward()
         loss_critic.backward()
 
-        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), self.max_grad_norm)
-        torch.nn.utils.clip_grad_norm_(self.critic.parameters(), self.max_grad_norm)
+
+        torch.nn.utils.clip_grad_norm_(self.actor.parameters(),self.max_grad_norm)
+        torch.nn.utils.clip_grad_norm_(self.critic.parameters(),self.max_grad_norm)
         self.actor_optimizer.step()
         self.critic_optimizer.step()
+
+        #计算更新后的策略分布
+        with torch.no_grad():
+            mu_new, sigma_new = self.actor(obs)
+            dist_new = torch.distributions.Normal(mu_new, sigma_new)
+
+        # 计算 KL 散度
+        kl_divergence = torch.distributions.kl_divergence(dist, dist_new).mean()
+        self.kl_divergence.append(kl_divergence)
 
 
     def record(self, obs, action, reward, next_obs, terminated):

@@ -21,19 +21,24 @@ def create_env(args):
     else:
         if args.max_episode_steps:
             env=gym.vector.AsyncVectorEnv([lambda:gym.make(args.env_name, max_episode_steps=args.max_episode_steps) for
-                                           _ in range(args.vec_num)],autoreset_mode=gym.vector.AutoresetMode.NEXT_STEP)
+                                           _ in range(args.vec_num)],autoreset_mode=gym.vector.AutoresetMode.SAME_STEP)
         else:
-            env = gym.vector.AsyncVectorEnv([lambda: gym.make(args.env_name) for _ in range(args.vec_num)],autoreset_mode=gym.vector.AutoresetMode.NEXT_STEP)
+            env = gym.vector.AsyncVectorEnv([lambda: gym.make(args.env_name) for _ in range(args.vec_num)],autoreset_mode=gym.vector.AutoresetMode.SAME_STEP)
         if Wrapper:
             env=Wrapper[1](env)
         env=gymnasium.wrappers.vector.RecordEpisodeStatistics(env)
     return env
+
+
+
+
+
 def initialize_wandb(args, timestamp):
     """初始化 wandb 以进行日志记录"""
 
 
     wandb.init(
-        project="RL-Training_a3c",
+        project=args.project_name,
         config=vars(args),
         name=f"{args.env_name}{args.algo_name}-{timestamp}"
     )
@@ -43,16 +48,17 @@ def save_checkpoint(agent, checkpoint_dir, episode):
     torch.save(agent.actor.state_dict(), checkpoint_path)
     return checkpoint_path
 
-
 def log_metrics(episode, env, agent=None, step=None):
     """记录 wandb 训练过程中的指标"""
+
     if agent:
         metrics = {
             "episode": episode + 1,
             "reward": env.return_queue[-1],
             "step": step,
             "epsilon": agent.epsilon,
-            "loss": sum(agent.training_error[-step:]) / step if step > 0 else 0,
+            "loss_actor": agent.training_error[-1],
+            "kl_divergence":agent.kl_divergence[-1] ,
             "beta": agent.memory.beta
         }
 
@@ -64,6 +70,57 @@ def log_metrics(episode, env, agent=None, step=None):
             "step": step,
         }
         wandb.log(metrics)
+
+def log_metrics_onpolicy(episode, env, agent=None,):
+    """记录 wandb 训练过程中的指标"""
+
+    reward=sum([env.return_queue[ - i] for i in range(1,args.vec_num+1) ])/ args.vec_num
+    step=sum([env.length_queue[ - i] for i in range(1,args.vec_num+1) ])/ args.vec_num
+    if agent:
+        metrics = {
+            "episode": episode + 1,
+            "reward": reward,
+            "step": step,
+            "loss_actor": (agent.training_error[-1][0]) ,
+            "loss_critic":agent.training_error[-1][1],
+            "kl_divergence":agent.kl_divergence[-1] ,
+        }
+
+        wandb.log(metrics)
+    else:
+        metrics={
+            "episode": episode + 1,
+            "reward": env.return_queue[-1],
+            "step": step,
+        }
+        wandb.log(metrics)
+
+def log_metrics_onpolicy_discrete(episode, env, agent=None,):
+    """记录 wandb 训练过程中的指标"""
+
+    reward=sum([env.return_queue[ - i] for i in range(1,args.vec_num+1) ])/ args.vec_num
+    step=sum([env.length_queue[ - i] for i in range(1,args.vec_num+1) ])/ args.vec_num
+    if agent:
+        metrics = {
+            "episode": episode + 1,
+            "reward": reward,
+            "step": step,
+            "loss_actor": (agent.training_error[-1][0]) ,
+            "loss_critic":agent.training_error[-1][1],
+
+        }
+
+        wandb.log(metrics)
+    else:
+        metrics={
+            "episode": episode + 1,
+            "reward": env.return_queue[-1],
+            "step": step,
+        }
+        wandb.log(metrics)
+
+
+
 
 def get_train_score(env,args):
     average_step=np.mean(env.length_queue).item()
@@ -114,8 +171,7 @@ def train_agent_asynchronous(agent, env, args, checkpoint_dir, timestamp):
 
 
             for i in range(args.vec_num):
-                if  episode_start[i]:
-                    continue
+
                 agent.record(observation[i], action[i], reward[i], next_observation[i], terminated[i])
 
             observation = next_observation
@@ -125,10 +181,8 @@ def train_agent_asynchronous(agent, env, args, checkpoint_dir, timestamp):
             if env.prev_dones[0]:
                 break
 
-        step = env.length_queue[-1]
-        log_metrics(episode, env, agent, step)
-        agent.decay_epsilon()
-        agent.increase_beta()
+        if len(env.length_queue) > args.vec_num and len(agent.training_error)>args.vec_num:
+            log_metrics_onpolicy(episode, env, agent)
 
         if (episode + 1) % 50 == 0:
             checkpoint_path = save_checkpoint(agent, checkpoint_dir, episode)
@@ -142,6 +196,43 @@ def train_agent_asynchronous(agent, env, args, checkpoint_dir, timestamp):
 
 
 
+
+
+def sweep_train_agent_asynchronous(agent, env, args, checkpoint_dir, timestamp):
+    """训练智能体"""
+    observation, info = env.reset()
+    episode_start = env.prev_dones
+    for episode in tqdm(range(args.episodes)):
+
+
+        while True:
+            action = agent.get_action(observation)
+            next_observation, reward, terminated, truncated, info = env.step(action)
+
+
+            for i in range(args.vec_num):
+
+                agent.record(observation[i], action[i], reward[i], next_observation[i], terminated[i])
+
+            observation = next_observation
+
+            agent.update()
+            episode_start=env.prev_dones
+            if env.prev_dones[0]:
+                break
+        if len(env.length_queue)>args.vec_num:
+            log_metrics_onpolicy(episode, env, agent)
+
+
+        if (episode + 1) % 50 == 0:
+            checkpoint_path = save_checkpoint(agent, checkpoint_dir, episode)
+            avg_reward = sum([env.return_queue[ - i] for i in range(50)]) / 50
+            wandb.log_model(checkpoint_path, f"{args.env_name}_{args.algo_name}_{timestamp}", [f"average_reward_{avg_reward}"])
+
+
+    average_step,shortest_step=get_train_score(env,args)
+    env.close()
+    return average_step
 
 def sweep_train_agent(agent, env, args, checkpoint_dir, timestamp):
     """训练智能体"""
@@ -158,8 +249,7 @@ def sweep_train_agent(agent, env, args, checkpoint_dir, timestamp):
             if done:
                 break
 
-        step = env.length_queue[-1]
-        log_metrics(episode, env, agent, step)
+        log_metrics(episode, env, agent)
         agent.decay_epsilon()
         agent.increase_beta()
 

@@ -16,6 +16,8 @@ def main():
     #创建检查点目录
     os.makedirs(checkpoint_dir, exist_ok=True)  # 自动创建目录\
 
+
+
     initialize_wandb(args,timestamp)
 
     env=create_env(args)
@@ -29,5 +31,5 @@ def main():
     else:train_agent(agent,env,args,checkpoint_dir,timestamp)
 
 
-for _ in range(10):
+for _ in range(5):
     main()

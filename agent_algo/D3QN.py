@@ -55,13 +55,13 @@ class Agent:
         self.use_prioritized = not args.stop_prio  # 是否使用优先经验回放（Prioritized Experience Replay）
 
         # 初始化 Q 网络（Main Q 网络 & Target Q 网络）
-        self.main_q = Net(self.obs_size, self.action_size).to(device)  # 训练用的主 Q 网络
+        self.main_q = DuelingNet(self.obs_size, self.action_size).to(device)  # 训练用的主 Q 网络
 
         if self.mode == "test":
             state_dict = torch.load(weight_path)  # 加载测试模型权重
             self.main_q.load_state_dict(state_dict)
 
-        self.target_q = Net(self.obs_size, self.action_size).to(device)  # 目标 Q 网络
+        self.target_q = DuelingNet(self.obs_size, self.action_size).to(device)  # 目标 Q 网络
         self.target_q.load_state_dict(self.main_q.state_dict())  # 初始化目标网络参数
 
         # 优化器 & 损失函数
@@ -117,9 +117,9 @@ class Agent:
 
         # 计算目标 Q 值
         with torch.no_grad():
-            index_q_t = self.main_q(next_obs).argmax(dim=1, keepdims=True)  # 选择下一个状态的最大 Q 值动作
-            q_t = self.target_q(next_obs).gather(1, index_q_t)  # 从目标 Q 网络获取 Q 值
-            q_t = self.gamma * torch.max(q_t, dim=1, keepdim=True).values * (~terminated) + reward
+            next_action = self.main_q(next_obs).argmax(dim=1, keepdims=True)  # 采用 Double DQN 方法
+            next_q = self.target_q(next_obs).gather(1, next_action)
+            q_t = self.gamma *next_q * (~terminated) + reward
 
             # 计算时序差分误差（TD Error）
             q_pred = q.squeeze(1)
